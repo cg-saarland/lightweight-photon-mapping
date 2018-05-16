@@ -121,6 +121,15 @@ public:
      * a pointer to this object.
      */
     const ConfigurableObject *object;
+
+    /**
+     * \brief Optional: The primitive index on which the position was sampled.
+     *
+     * For instance, the triangle mesh shape stores the triangle ID.
+     * This value might not be relevant for all shapes.
+     */
+    uint32_t primIndex;
+
 public:
     /// Create an invalid position sampling record
     inline PositionSamplingRecord() { }

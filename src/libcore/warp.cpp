@@ -51,6 +51,10 @@ Vector squareToCosineHemisphere(const Point2 &sample) {
     return Vector(p.x, p.y, z);
 }
 
+Point2 cosineHemisphereToSquare(const Vector& dir) {
+	return uniformDiskToSquareConcentric(Point2(dir.x, dir.y));
+}
+
 Vector squareToUniformCone(Float cosCutoff, const Point2 &sample) {
     Float cosTheta = (1-sample.x) + sample.x * cosCutoff;
     Float sinTheta = math::safe_sqrt(1.0f - cosTheta * cosTheta);
@@ -76,6 +80,16 @@ Point2 squareToUniformDisk(const Point2 &sample) {
 Point2 squareToUniformTriangle(const Point2 &sample) {
     Float a = math::safe_sqrt(1.0f - sample.x);
     return Point2(1 - a, a * sample.y);
+}
+
+Point2 uniformTriangleToSquare(const Point2 &bary) {
+	Float a = 1.0f - bary.x;
+
+	// corner case: y coordinate cannot be deduced
+	// (this case is mathematically not plausible anyway, so return 0)
+	if (a == 0.0f) return Point2(1.0f, 0.0f);
+
+	return Point2(1.0f - a * a, bary.y / a);
 }
 
 Point2 squareToUniformDiskConcentric(const Point2 &sample) {

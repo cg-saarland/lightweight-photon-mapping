@@ -152,7 +152,7 @@ inline Float RadianceQueryRecord::nextSample1D() {
 }
 
 inline PositionSamplingRecord::PositionSamplingRecord(const Intersection &its, EMeasure measure)
-    : p(its.p), time(its.time), n(its.shFrame.n), measure(measure), uv(its.uv), object(NULL) { }
+    : p(its.p), time(its.time), n(its.shFrame.n), measure(measure), uv(its.uv), object(NULL), primIndex(its.primIndex) { }
 
 inline DirectionSamplingRecord::DirectionSamplingRecord(const Intersection &its, EMeasure measure)
     : d(its.toWorld(its.wi)), measure(measure) { }

@@ -58,6 +58,27 @@ Point Triangle::sample(const Point *positions, const Normal *normals,
     return p;
 }
 
+Point2 Triangle::sampleInv(const Point *positions, const Normal *normals, const Point& p) const {
+	const Point &p0 = positions[idx[0]];
+	const Point &p1 = positions[idx[1]];
+	const Point &p2 = positions[idx[2]];
+
+	Vector sideA = p1 - p0, sideB = p2 - p0;
+	auto diff  = p - p0;
+	auto asqr  = dot(sideA, sideA);
+	auto ab    = dot(sideA, sideB);
+	auto bsqr  = dot(sideB, sideB);
+	auto inv_denom = 1.0f / (asqr * bsqr - ab * ab);
+
+	Point2 bary;
+	auto proja = dot(diff , sideA);
+	auto projb = dot(diff , sideB);
+	bary.x = (bsqr * proja - ab * projb) * inv_denom;
+	bary.y = (asqr * projb - ab * proja) * inv_denom;
+
+	return warp::uniformTriangleToSquare(bary);
+}
+
 Float Triangle::surfaceArea(const Point *positions) const {
     const Point &p0 = positions[idx[0]];
     const Point &p1 = positions[idx[1]];

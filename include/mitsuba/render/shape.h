@@ -362,6 +362,17 @@ public:
             const Point2 &sample) const;
 
     /**
+     * \brief Inverse transformation of \ref samplePosition()
+     *
+     * \param pRec
+     *      A position record determining the position, primitive, etc.
+     *
+     * \return
+     *      The primary sample space (u,v) coordinates that are mapped to this point
+     */
+    virtual Point2 samplePositionInv(const PositionSamplingRecord &pRec) const;
+
+    /**
      * \brief Query the probability density of \ref samplePosition() for
      * a particular point on the surface.
      *

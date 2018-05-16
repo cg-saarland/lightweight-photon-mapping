@@ -420,6 +420,14 @@ void TriMesh::samplePosition(PositionSamplingRecord &pRec,
         m_texcoords, pRec.n, pRec.uv, sample);
     pRec.pdf = m_invSurfaceArea;
     pRec.measure = EArea;
+	pRec.primIndex = index;
+}
+
+Point2 TriMesh::samplePositionInv(const PositionSamplingRecord &pRec) const {
+	SAssert(pRec.primIndex < m_triangleCount);
+	auto uv = m_triangles[pRec.primIndex].sampleInv(m_positions, m_normals, pRec.p);
+	uv.y = m_areaDistr.sampleReuseInv(pRec.primIndex, uv.y);
+	return uv;
 }
 
 struct Vertex {

@@ -215,6 +215,13 @@ public:
         pRec.uv = sample;
     }
 
+    Point2 samplePositionInv(const PositionSamplingRecord &pRec) const {
+		auto objpos = m_worldToObject(pRec.p);
+		auto u = (objpos.x + 1.0f) / 2.0f;
+		auto v = (objpos.y + 1.0f) / 2.0f;
+		return Point2(u, v);
+	}
+
     Float pdfPosition(const PositionSamplingRecord &pRec) const {
         return m_invSurfaceArea;
     }

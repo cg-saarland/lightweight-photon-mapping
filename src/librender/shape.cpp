@@ -233,6 +233,10 @@ void Shape::samplePosition(PositionSamplingRecord &pRec, const Point2 &sample) c
     NotImplementedError("samplePosition");
 }
 
+Point2 Shape::samplePositionInv(const PositionSamplingRecord &pRec) const {
+	NotImplementedError("samplePositionInv");
+}
+
 Float Shape::pdfPosition(const PositionSamplingRecord &pRec) const {
     NotImplementedError("pdfPosition");
 }

@@ -1014,4 +1014,70 @@
             simply set it to the current frame index.
         </param>
     </plugin>
+
+
+    <plugin type="integrator" name="lpm" readableName="Lightweight Photon Mapper" show="true"
+			className="LPMIntegrator" extends="Integrator">
+		<descr>
+			<p>This plugin implements a Lightweight Photon Mapper (short: LPM)</p>
+		</descr>
+		<param name="maxDepth" readableName="Maximum depth" type="integer" default="-1">
+			Specifies the longest path depth in the generated output image (where <tt>-1</tt>
+			corresponds to ∞). A value of 1 will only render directly visible light sources.
+			2 will lead to single-bounce (direct-only) illumination, and so on.
+		</param>
+		<param name="rrDepth" readableName="Russian Roulette starting depth" type="integer" default="5" importance="1">
+			Specifies the minimum path depth, after which the implementation will start to use the
+			"russian roulette" path termination criterion (set to <tt>-1</tt> to disable).
+		</param>
+		<param name="lpRatio" readableName="Light paths per camera path" type="float" default="1">
+			Specifies the number of light paths to trace for every camera path in each iteration.
+		</param>
+		<param name="initialRadius" readableName="Initial photon mapping radius" type="float" default="0">
+			The photon mapping radius used in the first iteration. The radius is reduced progressively as in Progressive Photon Mapping.
+			If a value of zero is provided, an appropriate radius is guessed based on the image resolution and scene size.
+		</param>
+		<param name="minLp" readableName="Minimum number of light paths" type="integer" default="500">
+			The minimum number of light paths, with which photon mapping is still more efficient than path tracing at
+			a given photon. This is the threshold used to restrict light path emission to only produce useful photons.
+		</param>
+		<param name="iterations" readableName="Number of iterations to run" type="integer" default="1">
+			The number of iterations. Each iteration traces a set of paths from the emitters and from the sensor.
+		</param>
+		<param name="sppPerIter" readableName="Camera paths per iteration" type="integer" default="1">
+			The number of samples, i.e., paths, to trace from every pixel in the image in one iteration.
+			This value can be increased to reduce the overhead of building photon maps.
+		</param>
+		<param name="visPhotons" readableName="Only visualize photons" type="boolean" default="false">
+			If set to true, no image is rendered. Instead, the photon density is visualized for the current iteration.
+		</param>
+		<param name="guideStart" readableName="First iteration with emission guiding" type="integer" default="1">
+			The number of iterations after which the photon emission is guided by the MIS weighted image
+			contribution of the photons from previous iterations.
+			Negative values indicate that this guiding should not take place.
+		</param>
+		<param name="guideUsefulStart" readableName="First iteration usefulness guiding" type="integer" default="2">
+			The number of iterations after which the photon emission is guided by the MIS weighted image
+			contribution of the useful photons from previous iterations.
+			Negative values indicate that this guiding should not take place.
+		</param>
+
+		<param name="enableMerge" readableName="Enable merging" type="boolean" default="true">
+			If set to true, Photon Mapping is used. Otherwise, only light tracing and path tracing are enabled.
+		</param>
+		<param name="mergePrimary" readableName="Merge at first hit" type="boolean" default="false">
+			If set to true, also perform density estimation at the first vertex along the camera path.
+			This technique can be far less efficient than tracing shadow rays from the photons to the camera due to the bias.
+		</param>
+		<param name="lightTraceDi" readableName="Use light tracing for direct illumination" type="boolean" default="false">
+			If set to true, photons at depth one are also connected to the camera.
+			Due to the covariance of these samples and sub-optimal MIS weights, this technique usually results in
+			higher levels of noise than relying entirely on the path tracer for such paths.
+		</param>
+		<param name="mergeDi" readableName="Use merging for direct illumination" type="boolean" default="false">
+			If set to true, photons at depth one are also considered for density estimation.
+			This is an inefficient technique for the same reasons as light tracing for direct illumination.
+			Furthermore, the additional bias is often not desired as well.
+		</param>
+	</plugin>
 </documentation>

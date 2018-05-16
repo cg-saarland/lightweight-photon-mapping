@@ -114,6 +114,14 @@ void Emitter::serialize(Stream *stream, InstanceManager *manager) const {
     stream->writeFloat(m_samplingWeight);
 }
 
+Point2 Emitter::sampleDirectionInv(const DirectionSamplingRecord&, const PositionSamplingRecord&) const {
+	NotImplementedError("sampleDirectionInv");
+}
+
+Point2 Emitter::samplePositionInv(const PositionSamplingRecord &pRec) const {
+	NotImplementedError("samplePositionInv");
+}
+
 Spectrum Emitter::sampleRay(Ray &ray,
         const Point2 &spatialSample,
         const Point2 &directionalSample,

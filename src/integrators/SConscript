@@ -40,4 +40,16 @@ plugins += bidirEnv.SharedLibrary('erpt',
         ['erpt/erpt.cpp', 'erpt/erpt_proc.cpp']
 )
 
+plugins += bidirEnv.SharedLibrary('lpm',
+        [
+        'lpm/lpm.cpp',
+        'lpm/light_trace.cpp',
+        'lpm/path_sampler.cpp',
+        'lpm/cam_trace.cpp',
+        'lpm/mis.cpp',
+        'lpm/emission_sampler.cpp',
+        'lpm/sparse_histogram.cpp'
+        ]
+)
+
 Export('plugins')

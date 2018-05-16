@@ -51,6 +51,9 @@ namespace warp {
     /// Sample a cosine-weighted vector on the unit hemisphere with respect to solid angles
     extern MTS_EXPORT_CORE Vector squareToCosineHemisphere(const Point2 &sample);
 
+	/// Inverse mapping of \ref squareToCosineHemisphere()
+	extern MTS_EXPORT_CORE Point2 cosineHemisphereToSquare(const Vector& dir);
+
     /// Density of \ref squareToCosineHemisphere() with respect to solid angles
     extern MTS_EXPORT_CORE inline Float squareToCosineHemispherePdf(const Vector &d)
         { return INV_PI * Frame::cosTheta(d); }
@@ -99,6 +102,9 @@ namespace warp {
 
     /// Convert an uniformly distributed square sample into barycentric coordinates
     extern MTS_EXPORT_CORE Point2 squareToUniformTriangle(const Point2 &sample);
+
+    /// Inverse of \ref squareToUniformTriangle()
+	extern MTS_EXPORT_CORE Point2 uniformTriangleToSquare(const Point2 &bary);
 
     /**
      * \brief Sample a point on a 2D standard normal distribution

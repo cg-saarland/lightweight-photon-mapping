@@ -78,6 +78,9 @@ struct MTS_EXPORT_CORE Triangle {
             const Point2 *texCoords, Normal &n, Point2 &uv,
             const Point2 &seed) const;
 
+	/// Computes the inverse mapping of the \ref sample() method
+	Point2 sampleInv(const Point *positions, const Normal *normals, const Point& p) const;
+
     /// Calculate the surface area of this triangle
     Float surfaceArea(const Point *positions) const;
 

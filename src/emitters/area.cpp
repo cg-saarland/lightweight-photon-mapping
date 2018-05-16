@@ -122,6 +122,15 @@ public:
         return Spectrum(1.0f);
     }
 
+    Point2 sampleDirectionInv(const DirectionSamplingRecord &dRec, const PositionSamplingRecord &pRec) const {
+		Vector local = Frame(pRec.n).toLocal(dRec.d);
+		return warp::cosineHemisphereToSquare(local);
+	}
+
+	Point2 samplePositionInv(const PositionSamplingRecord &pRec) const {
+		return m_shape->samplePositionInv(pRec);
+	}
+
     Spectrum evalDirection(const DirectionSamplingRecord &dRec,
             const PositionSamplingRecord &pRec) const {
         Float dp = dot(dRec.d, pRec.n);

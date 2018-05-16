@@ -184,6 +184,8 @@ public:
     void samplePosition(PositionSamplingRecord &pRec,
             const Point2 &sample) const;
 
+    Point2 samplePositionInv(const PositionSamplingRecord &pRec) const;
+
     /**
      * \brief Query the probability density of \ref samplePosition() for
      * a particular point on the surface.

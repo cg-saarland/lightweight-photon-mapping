@@ -458,6 +458,36 @@ public:
     // =================================================================
 
     /**
+     * \brief Computes the inverse mapping of the \ref sampleDirection method.
+     *
+     * \param dRec
+     *      A direction sampling record to invert.
+     *
+     * \param pRec
+     *      The position for which a direction was sampled, for emitters where
+     *      position and direction sampling are not independent
+     *
+     * \return
+     *      The primary sample space (u,v) coordinates that are transformed into
+     *      the given direction by the \ref sampleDirection method.
+     */
+    virtual Point2 sampleDirectionInv(
+        const DirectionSamplingRecord &dRec,
+        const PositionSamplingRecord &pRec) const;
+
+    /**
+     * \brief Computes the inverse mapping of the \ref samplePosition method.
+     *
+     * \param pRec
+     *      A position sampling record to invert.
+     *
+     * \return
+     *      The primary sample space (u,v) coordinates that are transformed into
+     *      the given position by the \ref samplePosition method.
+     */
+    virtual Point2 samplePositionInv(const PositionSamplingRecord &pRec) const;
+
+    /**
      * \brief Return the radiant emittance for the given surface intersection
      *
      * This is function is used when an area light source has been hit by a
