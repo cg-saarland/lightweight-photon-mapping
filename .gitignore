@@ -48,3 +48,6 @@ mitsuba.*.log
 .settings
 .cproject
 .project
+
+# Debug output files
+*.hist
