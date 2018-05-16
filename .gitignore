@@ -51,3 +51,4 @@ mitsuba.*.log
 
 # Debug output files
 *.hist
+*.ipynb_checkpoints
