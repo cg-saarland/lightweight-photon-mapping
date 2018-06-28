@@ -16,7 +16,7 @@ Our extensions to the original Mitsuba source code consist of the following majo
 - A simple emission guiding approach using a 4D histogram for each light source in the scene
 - Functions in the emitter classes to compute the inverse mapping of the position and direction sampling
 
-All code, except for the required extensions to the emitters, can be found in ``src/integrators/lpm``.
+All code, except for the required extensions to the emitters, can be found in ``src/integrators/lpm/``.
 
 The core contribution of the lightweight photon mapping paper, determining the usefulness of a photon, is implemented in the file *usefulness.h*.
 Histograms of the image contribution of (useful) photons are built and used for the importance sampling of emission in the files *emission_sampler.h* and *emission_sampler.cpp*.
@@ -28,3 +28,7 @@ The files *mis.h* and *mis.cpp* provide code to combine the estimates via multip
 The derivation of the MIS weights can be found in the [VCM paper](http://www.iliyan.com/publications/VertexMerging), the method used to compute the weights is inspired by the approach described in the [tech report](http://www.iliyan.com/publications/ImplementingVCM) on implementing VCM.
 The remaining files define datastructures and utility functions required for the implementation, like the hash grid used for photon mapping and the 4D histograms used for emission guiding.
 
+## Testing
+
+The repo contains a modified version of the "Still Life" test scene used in the paper, it can be found in ``test/lpm/``.
+Furthermore, the same folder contains an IPython notebook that can load the emission histograms, which are dumped by the integrator after each iteration, and visualize them.
