@@ -30,11 +30,7 @@ void LightPathTracer::handle_surface(int depth, int nullInteractions, bool delta
 
     if (depth >= max_depth_ && max_depth_ > 0) return;
 
-    // Do not render direct illumination or directly visible lights with light tracing!
-    // TODO implement properly in MIS weights
-    // if (depth <= 1) return;
-
-    // int maxInteractions = max_depth_ - depth - 1;
+    path_.last->useful_for_merging = is_useful_photon(&path_, min_lp_, radius_);
 
     DirectSamplingRecord dRec(its);
     Spectrum value = scene_->sampleSensorDirect(dRec, sampler_->next2D(), true);
@@ -85,37 +81,21 @@ void LightPathTracer::handle_surface(int depth, int nullInteractions, bool delta
     value *= mis_weight;
 
     // log the image contribution for use with guiding methods
-    path_.last->useful_for_merging = is_useful_photon(&path_, min_lp_, radius_);
     path_.last->guiding_contrib = value * path_.last->throughput;
 
     value *= emitted * throughput;
 
-    /* Splat onto the accumulation buffer */
-    result_->put(dRec.uv, (Float *) &value[0]);
+    // Splat onto the accumulation buffer
+    result_->img->put(dRec.uv, (Float *) &value[0]);
+
+    if (path_.last->useful_for_merging)
+        result_->img_useful->put(dRec.uv, (Float *) &value[0]);
 }
 
 void LightPathTracer::handle_medium(int depth, int nullInteractions, bool delta,
                                     const MediumSamplingRecord &mRec, const Medium *medium,
                                     const Vector &wi, const Spectrum &weight)
 {
-    // if (depth >= max_depth_ && max_depth_ > 0) return;
-
-    // DirectSamplingRecord dRec(mRec);
-    // int maxInteractions = max_depth_ - depth - 1;
-    // Spectrum value = weight * scene_->sampleAttenuatedSensorDirect(
-    // 	dRec, medium, maxInteractions, sampler_->next2D(), sampler_);
-
-    // if (value.isZero()) return;
-
-    // /* Evaluate the phase function */
-    // const PhaseFunction *phase = medium->getPhaseFunction();
-    // PhaseFunctionSamplingRecord pRec(mRec, wi, dRec.d, EImportance);
-    // value *= phase->eval(pRec);
-
-    // if (value.isZero()) return;
-
-    // /* Splat onto the accumulation buffer */
-    // result_->put(dRec.uv, (Float *) &value[0]);
 }
 
 } // namespace lpm
@@ -166,7 +146,8 @@ void LightTracer::process(const WorkUnit* wu, WorkResult* res, const bool& stop)
     auto range  = static_cast<const RangeWorkUnit*>(wu);
     result_ = static_cast<LTWorkResult*>(res);
     result_->range->set(range);
-    result_->clear();
+    result_->img->clear();
+    result_->img_useful->clear();
 
     // generate some samples
     sampler_->generate(Point2i(0));
@@ -250,6 +231,9 @@ void LTProcess::bindResource(const std::string &name, int id) {
         film_  = sensor->getFilm();
         img = new ImageBlock(Bitmap::ESpectrum, sensor->getFilm()->getCropSize(), nullptr);
         img->clear();
+
+        img_useful = new ImageBlock(Bitmap::ESpectrum, sensor->getFilm()->getCropSize(), nullptr);
+        img_useful->clear();
     }
     ParallelProcess::bindResource(name, id);
 }
@@ -276,7 +260,8 @@ void LTProcess::processResult(const WorkResult* wr, bool cancelled) {
     LockGuard lock(result_mutex_);
     complete_ += range->getSize();
     progress_->update(complete_);
-    img->put(result);
+    img->put(result->img.get());
+    img_useful->put(result->img_useful.get());
 
     if (complete_ == static_cast<size_t>(config_.lp_count)) {
         weight = (img->getWidth() * img->getHeight()) / (Float)config_.lp_count;

@@ -1079,5 +1079,9 @@
 			This is an inefficient technique for the same reasons as light tracing for direct illumination.
 			Furthermore, the additional bias is often not desired as well.
 		</param>
+        <param name="visLpContrib" readableName="Visualize Pixel Heuristic Input" type="boolean" default="false">
+            If set to true, this renders an image of only the MIS weighted contribution of the useful photons,
+            instead of the full image.
+        </param>
 	</plugin>
 </documentation>

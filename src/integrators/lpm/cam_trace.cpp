@@ -14,7 +14,7 @@ CamPathTracer::CamPathTracer(EmitDistPtr d, int rr_depth, int max_depth, Scene* 
                              VertexMemPool* pool, CTWorkResult* res, const lpm::MisComputer* mis,
                              const lpm::PhotonContainer* p, const lpm::HashGrid* h, Float radius, int lp_count, int min_lp, bool visp)
 : EmissionSampler(d, rr_depth, max_depth, scene, sampler, sensor, pool)
-, contrib(0.0f), result_(res), mis_(mis)
+, contrib(0.0f), contrib_useful(0.0f), result_(res), mis_(mis)
 , photons_(p), photon_accel_(h), radius_(radius), radius_sqr_(radius * radius), lp_count_(lp_count), min_lp_(min_lp)
 , vis_photons_(visp)
 {
@@ -139,7 +139,9 @@ void CamPathTracer::merge(int depth, const BSDF* bsdf, const Intersection& its, 
         Spectrum value = mis_weight * kernel * throughput;
         photon_contrib += value * (vis_photons_ ? Spectrum(1.0f) : bsdf_value * p.weight * adjoint_correction);
 
-        // Log the luminance of the photon contribution to the image
+        if (p.is_useful) contrib_useful += value * bsdf_value * p.weight * adjoint_correction * (1.0f / lp_count_);
+
+        // Log the luminance of the photon's contribution to the image
         // Do not divide by the number of light paths because the light tracer doesn't
         Spectrum guiding_weight = value * bsdf_value * p.throughput;
         atomic_add(p.guiding_contrib, guiding_weight.getLuminance());
@@ -179,8 +181,10 @@ ref<WorkResult> CameraTracer::createWorkResult() const {
     // TODO adapt block size
     auto blockSize = Vector2i(64);
     auto block = new CTWorkResult(blockSize, filter_.get());
-    block->setOffset(Point2i(0, 0));
-    block->setSize(blockSize);
+    block->img->setOffset(Point2i(0, 0));
+    block->img->setSize(blockSize);
+    block->img_useful->setOffset(Point2i(0, 0));
+    block->img_useful->setSize(blockSize);
     return block;
 }
 
@@ -207,9 +211,12 @@ void CameraTracer::prepare() {
 void CameraTracer::process(const WorkUnit* wu, WorkResult* res, const bool& stop) {
     auto rect  = static_cast<const RectangularWorkUnit*>(wu);
     result_ = static_cast<CTWorkResult*>(res);
-    result_->setOffset(rect->getOffset());
-    result_->setSize(rect->getSize());;
-    result_->clear();
+    result_->img->setOffset(rect->getOffset());
+    result_->img->setSize(rect->getSize());;
+    result_->img->clear();
+    result_->img_useful->setOffset(rect->getOffset());
+    result_->img_useful->setSize(rect->getSize());;
+    result_->img_useful->clear();
 
     lpm::VmMis mis(config_.lp_per_cp, config_.pm_radius, config_.lp_count,
                    config_.light_trace_di, config_.enable_merge, config_.merge_primary, config_.merge_di);
@@ -227,7 +234,8 @@ void CameraTracer::process(const WorkUnit* wu, WorkResult* res, const bool& stop
                                                 &pool, result_, &mis, photons_, photon_accel_, config_.pm_radius,
                                                 config_.lp_count, config_.min_lp, config_.vis_photons);
             cp_tracer.trace(lpm::PathSampler::FROM_PIXEL, pixel, &mis);
-            result_->put(cp_tracer.pixel, cp_tracer.contrib, 1.0f);
+            result_->img->put(cp_tracer.pixel, cp_tracer.contrib, 1.0f);
+            result_->img_useful->put(cp_tracer.pixel, cp_tracer.contrib_useful, 1.0f);
             pool.reset();
         }
     }
@@ -250,9 +258,10 @@ void CTProcess::processResult(const WorkResult *wr, bool cancelled) {
     LockGuard lock(m_resultMutex);
     m_progress->update(++m_resultCount);
 
-    img->put(static_cast<const ImageBlock*>(result));
+    img->put(static_cast<const ImageBlock*>(result->img.get()));
+    img_useful->put(static_cast<const ImageBlock*>(result->img_useful.get()));
 
-    m_queue->signalWorkEnd(m_parent, result, false);
+    m_queue->signalWorkEnd(m_parent, result->img.get(), false);
 }
 
 void CTProcess::bindResource(const std::string &name, int id) {
@@ -260,8 +269,11 @@ void CTProcess::bindResource(const std::string &name, int id) {
     if (name == "sensor") {
         auto sensor = static_cast<Sensor*>(Scheduler::getInstance()->getResource(id));
         film_  = sensor->getFilm();
-        img = new ImageBlock(Bitmap::ESpectrumAlphaWeight, sensor->getFilm()->getCropSize(), nullptr);
+        img = new ImageBlock(Bitmap::ESpectrum, sensor->getFilm()->getCropSize(), nullptr);
         img->clear();
+
+        img_useful = new ImageBlock(Bitmap::ESpectrum, sensor->getFilm()->getCropSize(), nullptr);
+        img_useful->clear();
     }
 }
 

@@ -31,6 +31,8 @@ struct LPMConfig {
     bool light_trace_di;
     bool merge_di;
 
+    bool vis_lpcontrib;
+
     inline LPMConfig() { }
 
     inline LPMConfig(Stream *stream) {
@@ -54,6 +56,8 @@ struct LPMConfig {
         merge_primary        = stream->readBool();
         light_trace_di       = stream->readBool();
         merge_di             = stream->readBool();
+
+        vis_lpcontrib = stream->readBool();
     }
 
     inline void serialize(Stream *stream) const {
@@ -77,6 +81,8 @@ struct LPMConfig {
         stream->writeBool(merge_primary);
         stream->writeBool(light_trace_di);
         stream->writeBool(merge_di);
+
+        stream->writeBool(vis_lpcontrib);
     }
 
     void dump() const {

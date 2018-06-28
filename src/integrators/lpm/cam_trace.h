@@ -10,10 +10,30 @@
 
 MTS_NAMESPACE_BEGIN
 
-struct CTWorkResult : public ImageBlock {
+struct CTWorkResult : public WorkResult {
     CTWorkResult(const Vector2i& size, const ReconstructionFilter* filter)
-        : ImageBlock(Bitmap::ESpectrumAlphaWeight, size, filter)
+        : img(new ImageBlock(Bitmap::ESpectrum, size, filter))
+        , img_useful(new ImageBlock(Bitmap::ESpectrum, size, filter))
     {}
+
+    ref<ImageBlock> img;
+    ref<ImageBlock> img_useful;
+
+    void load(Stream *stream) override {
+        img->load(stream);
+        img_useful->load(stream);
+    }
+
+    /// Serialize a work result to a binary data stream
+    void save(Stream *stream) const override {
+        img->save(stream);
+        img_useful->save(stream);
+    }
+
+    /// Return a string representation
+    std::string toString() const override {
+        return img->toString() + img_useful->toString();
+    }
 
     MTS_DECLARE_CLASS()
 };
@@ -36,6 +56,7 @@ public:
     void handle_miss(int depth, int nullInteractions, bool delta, const Spectrum& weight) override;
 
     Spectrum contrib;
+    Spectrum contrib_useful;
 
 protected:
     ref<CTWorkResult> result_;
@@ -98,6 +119,7 @@ public:
     MTS_DECLARE_CLASS()
 
     ref<ImageBlock> img;
+    ref<ImageBlock> img_useful;
 
 private:
     ref<Timer> refresh_timer_;
