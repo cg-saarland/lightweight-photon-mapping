@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+
+	Automatically converted from Wavefront OBJ
+
+-->
+<scene version="0.6.0">
+	<integrator type="lpm">
+		<integer name="maxDepth" value="-1"/>
+		<boolean name="enableMerge" value="true"/>
+		<boolean name="mergePrimary" value="true"/>
+		<boolean name="lightTraceDi" value="true"/>
+		<boolean name="mergeDi" value="true"/>
+		<integer name="guideStart" value="1"/>
+		<integer name="guideUsefulStart" value="2"/>
+		<integer name="iterations" value="10"/>
+		<float name="initialRadius" value="0.01"/>
+	</integrator>
+
+	<sensor type="perspective">
+		<float name="farClip" value="1200.59"/>
+		<float name="focusDistance" value="12.1768"/>
+		<float name="fov" value="45"/>
+		<string name="fovAxis" value="x"/>
+		<float name="nearClip" value="0.0243836"/>
+		<transform name="toWorld">
+
+			<lookat target="11.0343, 6.31104, 7.89292" origin="11.9112, 6.52513, 8.32331" up="-0.213864, 0.975605, -0.0495615"/>
+		</transform>
+
+		<sampler type="independent">
+			<integer name="sampleCount" value="2"/>
+		</sampler>
+
+		<film type="hdrfilm">
+			<boolean name="banner" value="false"/>
+			<integer name="height" value="540"/>
+			<integer name="width" value="960"/>
+
+			<rfilter type="gaussian"/>
+		</film>
+	</sensor>
+
+	<bsdf type="diffuse" id="Cap_1SG_material">
+		<rgb name="reflectance" value="1 1 1"/>
+	</bsdf>
+
+	<bsdf type="diffuse" id="initialShadingGroup_material">
+		<rgb name="reflectance" value="0.132868 0.132868 0.132868"/>
+	</bsdf>
+
+	<bsdf type="diffuse" id="apple_001_material">
+		<texture name="reflectance" type="bitmap" id="apple_001.png">
+			<string name="filename" value="textures/apple_001.png"/>
+			<float name="gamma" value="1.7"/>
+		</texture>
+	</bsdf>
+
+	<bsdf type="diffuse" id="apple_002_material">
+		<texture name="reflectance" type="bitmap" id="apple_002.png">
+			<string name="filename" value="textures/apple_002.png"/>
+			<float name="gamma" value="1.7"/>
+		</texture>
+	</bsdf>
+
+	<bsdf type="diffuse" id="bottle_cap_material">
+		<rgb name="reflectance" value="1 1 1"/>
+	</bsdf>
+
+	<bsdf type="diffuse" id="cloth_bottom_material">
+		<rgb name="reflectance" value="0.015, 0.01, 0.01"/>
+	</bsdf>
+
+	<bsdf type="diffuse" id="cloth_top_material">
+		<rgb name="reflectance" value="0.4 0.4 0.4"/>
+	</bsdf>
+
+	<bsdf type="diffuse" id="walls_material">
+		<rgb name="reflectance" value="0.115261 0.0855979 0.0375789"/>
+	</bsdf>
+
+	<bsdf type="roughconductor" id="bowl_material">
+		<float name="alpha" value="0.2"/>
+		<string name="material" value="Ag"/>
+	</bsdf>
+
+	<bsdf type="roughconductor" id="cap_metal_material">
+		<float name="alpha" value="0.1"/>
+		<string name="material" value="Ag"/>
+	</bsdf>
+
+	<bsdf type="conductor" id="mirror_material">
+		<rgb name="specularReflectance" value="1 1 1"/>
+		<string name="material" value="Ag"/>
+	</bsdf>
+
+	<bsdf type="dielectric" id="glass_material">
+		<float name="intIOR" value="1.6"/>
+		<float name="extIOR" value="1"/>
+	</bsdf>
+
+	<bsdf type="dielectric" id="water_blue_material">
+		<float name="intIOR" value="1.33"/>
+		<float name="extIOR" value="1"/>
+		<rgb name="specularReflectance" value="0.9 0.1 0.3"/>
+		<rgb name="specularTransmittance" value="0.9 0.1 0.3"/>
+	</bsdf>
+
+	<bsdf type="dielectric" id="water_clear_material">
+		<float name="intIOR" value="1.33"/>
+		<float name="extIOR" value="1"/>
+	</bsdf>
+
+	<bsdf type="dielectric" id="water_green_material">
+		<float name="intIOR" value="1.33"/>
+		<float name="extIOR" value="1"/>
+		<rgb name="specularReflectance" value="0.9 0.764 0.042"/>
+		<rgb name="specularTransmittance" value="0.9 0.764 0.042"/>
+	</bsdf>
+
+	<bsdf type="diffuse" id="back_light_material">
+		<rgb name="reflectance" value="0 0 0"/>
+	</bsdf>
+
+	<bsdf type="diffuse" id="fill_light_material">
+		<rgb name="reflectance" value="0 0 0"/>
+	</bsdf>
+
+	<bsdf type="diffuse" id="key_light_material">
+		<rgb name="reflectance" value="0 0 0"/>
+	</bsdf>
+
+	<shape type="serialized" id="still_life_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="0"/>
+
+		<ref name="bsdf" id="cap_metal_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_1_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="1"/>
+
+		<ref name="bsdf" id="bottle_cap_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_2_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="2"/>
+
+		<ref name="bsdf" id="apple_002_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_3_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="3"/>
+
+		<ref name="bsdf" id="bottle_cap_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_4_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="4"/>
+
+		<ref name="bsdf" id="apple_002_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_5_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="5"/>
+
+		<ref name="bsdf" id="apple_001_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_6_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="6"/>
+
+		<ref name="bsdf" id="glass_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_7_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="7"/>
+
+		<ref name="bsdf" id="water_blue_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_8_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="8"/>
+
+		<ref name="bsdf" id="glass_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_9_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="9"/>
+
+		<ref name="bsdf" id="water_blue_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_10_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="10"/>
+
+		<ref name="bsdf" id="apple_002_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_11_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="11"/>
+
+		<bsdf type="diffuse"/>
+
+		<emitter type="area">
+			<rgb name="radiance" value="1000, 1000, 1000"/>
+		</emitter>
+	</shape>
+
+	<shape type="serialized" id="still_life_12_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="12"/>
+
+		<ref name="bsdf" id="water_green_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_13_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="13"/>
+
+		<ref name="bsdf" id="back_light_material"/>
+
+		<emitter type="area">
+			<rgb name="radiance" value="100, 100, 100"/>
+		</emitter>
+	</shape>
+
+	<shape type="serialized" id="still_life_14_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="14"/>
+
+		<ref name="bsdf" id="initialShadingGroup_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_15_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="15"/>
+
+		<ref name="bsdf" id="apple_002_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_16_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="16"/>
+
+		<ref name="bsdf" id="cap_metal_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_17_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="17"/>
+
+		<ref name="bsdf" id="cloth_top_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_18_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="18"/>
+
+		<ref name="bsdf" id="glass_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_19_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="19"/>
+
+		<ref name="bsdf" id="apple_001_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_20_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="20"/>
+
+		<ref name="bsdf" id="apple_001_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_21_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="21"/>
+
+		<ref name="bsdf" id="cloth_bottom_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_22_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="22"/>
+
+		<ref name="bsdf" id="apple_001_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_23_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="23"/>
+
+		<ref name="bsdf" id="mirror_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_24_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="24"/>
+
+		<ref name="bsdf" id="cap_metal_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_25_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="25"/>
+
+		<ref name="bsdf" id="cap_metal_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_26_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="26"/>
+
+		<ref name="bsdf" id="apple_002_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_27_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="27"/>
+
+		<ref name="bsdf" id="glass_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_28_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="28"/>
+
+		<ref name="bsdf" id="cap_metal_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_29_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="29"/>
+
+		<ref name="bsdf" id="water_clear_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_30_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="30"/>
+
+		<ref name="bsdf" id="bottle_cap_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_31_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="31"/>
+
+		<ref name="bsdf" id="cap_metal_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_32_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="32"/>
+
+		<ref name="bsdf" id="apple_001_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_33_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="33"/>
+
+		<ref name="bsdf" id="glass_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_34_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="34"/>
+
+		<ref name="bsdf" id="glass_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_35_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="35"/>
+
+		<ref name="bsdf" id="walls_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_36_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="36"/>
+
+		<ref name="bsdf" id="apple_002_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_37_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="37"/>
+
+		<ref name="bsdf" id="Cap_1SG_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_38_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="38"/>
+
+		<ref name="bsdf" id="apple_001_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_39_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="39"/>
+
+		<ref name="bsdf" id="apple_002_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_40_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="40"/>
+
+		<ref name="bsdf" id="apple_001_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_41_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="41"/>
+
+		<ref name="bsdf" id="apple_002_material"/>
+	</shape>
+
+	<shape type="serialized" id="still_life_42_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="42"/>
+
+		<ref name="bsdf" id="fill_light_material"/>
+
+		<emitter type="area">
+			<rgb name="radiance" value="500, 500, 500"/>
+		</emitter>
+	</shape>
+
+	<shape type="serialized" id="still_life_43_mesh">
+		<string name="filename" value="still_life.serialized"/>
+		<integer name="shapeIndex" value="43"/>
+
+		<ref name="bsdf" id="bowl_material"/>
+	</shape>
+</scene>
